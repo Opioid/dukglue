@@ -30,20 +30,19 @@ namespace dukglue
 		class TypeInfo
 		{
 		public:
-			TypeInfo(std::type_index&& idx) : index_(idx), base_(nullptr) {}
+			TypeInfo(duk_uint_t idx) : index_(idx), base_(nullptr) {}
 			TypeInfo(const TypeInfo& rhs) : index_(rhs.index_), base_(rhs.base_) {}
 
 			inline void set_base(TypeInfo* base) {
 				base_ = base;
 			}
 
-			template<typename T>
-			bool can_cast() const {
-				if (index_ == typeid(T))
+			bool can_cast(duk_uint_t class_idx) const {
+				if (index_ == class_idx)
 					return true;
 
 				if (base_)
-					return base_->can_cast<T>();
+					return base_->can_cast(class_idx);
 
 				return false;
 			}
@@ -56,7 +55,7 @@ namespace dukglue
 			inline bool operator!=(const TypeInfo& rhs) const { return index_ != rhs.index_; }
 
 		private:
-			std::type_index index_;
+			duk_uint_t index_;
 			TypeInfo* base_;
 		};
 	}

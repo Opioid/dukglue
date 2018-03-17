@@ -1,6 +1,6 @@
 #pragma once
 
-#include <duktape.h>
+#include "duktape/duktape.h"
 
 #include <unordered_map>
 
